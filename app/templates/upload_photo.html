@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  {% if successful_upload %}
+    <div class="container text-center">
+        <img id="image" src="../static/output/imagen_2023-03-07_014347405.png" style="max-width: 0px; max-height: 0px;">
+        <h5>Carga exitosa</h5>
+        <h2>Resultado</h2>
+        <img id="image" src="../static/input/{{img}}" style="max-width: 411px; max-height: 409px;">
+        <img id="image" src="../static/output/{{img}}" style="max-width: 411px; max-height: 409px;">
+    </div>
+    <div class="container text-center">
+        <table class="table">
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Confianza</th>
+            </tr>
+            {% for i in range(0, predictions['displayNames'] |count) %}
+                <tr>
+                    <td>{{ predictions['displayNames'][i] }}</td>
+                    <td>{{ '%0.2f'|format((predictions['confidences'][i])*100) }} %</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <p>Si quieres probar con otra imagen da click <a href="/upload">aquí</a>
+    </div>
+  {% else %}
+    <h2>Carga una imagen</h2>
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+      <label for="picture">Selecciona una imagen</label>
+      <input type="file" name="picture" accept="image/*">
+      <button type="submit">Cargar</button>
+    </form>
+  {% endif %}
+{% endblock %}
